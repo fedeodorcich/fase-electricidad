@@ -5,23 +5,36 @@
 		{
 			private $ArrayDatos = [];
 			private $length;
+			//--------------------------------------------------------------------------------------------------CREATE
 			function __construct($array)
 			{
 				$this->ArrayDatos = $array;
 				$this->length = sizeof($array);
 			}
-			function createCliente(){
-				
+			//--------------------------------------------------------------------------------------------------UPDATE
+			function updateCliente($dbh,$id){
+				$sqlt="UPDATE `clientes` SET `MAIL` = :mail , `NROTEL1` = :tel1 , `NROTEL2` = :tel2 WHERE `clientes`.`ID` = :id";
+
+
+				$st = $dbh->prepare($sqlt);
+
+				$st->bindParam(':mail',$this->ArrayDatos[9]); //---------bindeo de datos
+				$st->bindParam(':tel1',$this->ArrayDatos[7]);
+				$st->bindParam(':tel2',$this->ArrayDatos[8]);
+				$st->bindParam(':id',$id);
+
+				$st->execute();	//-------actualiza correo y telefonos
+						
+				echo "Cliente updated";
+
 			}
-			function updateCliente(){
-				// llama a la query para un insert
-			}
+			//---------------------------------------------------------------------------------------------------READ
 			function getClientes(){
 				echo $this->ArrayDatos[0];
 
 			}
 
-
+			//---------------------------------------------------------------------------------------------------COMPARE
 			 //mysql_real_escape_string($usuario), 
 
 			function compareClientes(){
@@ -39,23 +52,14 @@
 
 				if($row = $stmt->fetch()){ //---si el usuario existe ejecuta esto
 
-					if($row['MAIL']!=$this->ArrayDatos[9] || $row['NROTEL1']!=$this->ArrayDatos[7] || $row['NROTEL2']!=$this->ArrayDatos[8])
+					if($row['MAIL']!=$this->ArrayDatos[9] || $row['NROTEL1']!=$this->ArrayDatos[7] || $row['NROTEL2']!=$this->ArrayDatos[8]) //-----si hay cambios en correo o telefonos entra
 					{
-						$sqlt="UPDATE `clientes` SET `MAIL` = ':mail' WHERE `clientes`.`ID` = '$row[ID]'";
-
-
-						$st = $dbh->prepare($sqlt);
-
-						$st->bindParam(':mail',$this->ArrayDatos[9]);
-						$st->bindParam(':tel1',$this->ArrayDatos[7]);
-						$st->bindParam(':tel2',$this->ArrayDatos[8]);
-						$st->execute();
-						
-						echo "Cliente updated";
-
+						$this->updateCliente($dbh,$row['ID']);
+						$dbh=null;
 					}
 					else{
-						echo "cliente existente sin modificacion";
+						echo "Cliente existente sin modificacion";
+						$dbh=null;
 					}
     				
     				
@@ -95,6 +99,7 @@
 
 					$st->execute();
 					echo "usuario creado";
+					$dbh=null;
 
 				}
 				

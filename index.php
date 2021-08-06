@@ -12,23 +12,21 @@
 <body style="background-color:teal;">
 	<?php 
 	
-		//$link="archivos/".$hoy.".log";
 		$link="textos/Clientes.txt";
 		$aCadena = file("$link");
 		$arrayend=end($aCadena);
 		$indexpre=array_key_last($aCadena);
-		$i=1;
-		while($aCadena[$i]!=null)
-		{	
+		//$i=1;
+		$length = sizeof($aCadena);
+		for ($i=1; $i < $length; $i++) { 
 			$firstaux=$aCadena[$i];//asigna al auxiliar el penultimo elemento del arreglo
 			$firstaux=explode(";", $firstaux);//Divide campos tomando como referencia el caracter de punto y coma
 			$cliente=new Cliente($firstaux);
-			//$cliente->getClientes();
-			echo '<hr>';
 			$cliente->compareClientes();
+			echo '<hr>';
 			echo '<br>';
-			$i++;
 		}
+		
 	 ?>
 
 </body>
