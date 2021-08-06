@@ -18,28 +18,18 @@
 			}
 			function getClientes(){
 				echo $this->ArrayDatos[0];
-				/*$conexion=new mysqli('localhost','root','','fase');
-				$sql="SELECT * FROM clientes";
-				$query=mysqli_query($conexion,$sql);
-				$resp=mysqli_fetch_array($query);
-				print_r($resp);*/
+
 			}
+
+
+			 //mysql_real_escape_string($usuario), 
+
 			function compareClientes(){
-				//--------obtencion de schema
-				$con=new Conectar();
-				$dbh=$con->conexion();
+		
+				$con=new Conectar(); //-----------se crea el objeto de la clase conectar
+				$dbh=$con->conexion(); //---------se asigna a la variable el método de conexion
 
-				/*$stmt = $dbh->prepare("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'fase' AND TABLE_NAME = 'clientes'");
-
-				$schemaSql="SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'fase' AND TABLE_NAME = 'clientes'";
-				$getSchema=mysqli_query($conexion,$schemaSql);
-				$Schema=mysqli_fetch_array($getSchema);*/
-
-
-
-				//---------------------------
-
-				$sql="SELECT * FROM clientes WHERE CODCTA=:dato"; //---busca cliente existente
+				$sql="SELECT * FROM clientes WHERE CODCTA=:dato"; //---busca cliente existente en base al código de cliente
 
 				$stmt = $dbh->prepare($sql);
 
@@ -47,34 +37,66 @@
 
 				$stmt->execute();
 
-				if($row = $stmt->fetch()){
+				if($row = $stmt->fetch()){ //---si el usuario existe ejecuta esto
 
-					//$st = $dbh->prepare("");
-    				echo json_encode($row);
-				}else{
-					$st = $dbh->prepare("INSERT INTO `clientes`(`ID`, `CODCTA`, `NOMBRE`, `DIRECC`, `CALLE`, `NRO`, `LOCALIDAD`, `CODPOSTAL`, `NROTEL1`, `NROTEL2`, `MAIL`, `CODIVA`, `NROIVA`, `CODVEN`, `CODCOB`, `LISPRE`, `LIMCRE`, `DIAVEN`, `DEUSAL`, `ESTADO`, `TIMING`) VALUES ('0',:0,:1,:2,:3,:4,:5,:6,:7,:8,:9,:10,:11,:12,:13,:14,:15,:16,:17,:18,current_timestamp())");
+					if($row['MAIL']!=$this->ArrayDatos[9] || $row['NROTEL1']!=$this->ArrayDatos[7] || $row['NROTEL2']!=$this->ArrayDatos[8])
+					{
+						$sqlt="UPDATE `clientes` SET `MAIL` = ':mail' WHERE `clientes`.`ID` = '$row[ID]'";
 
-					for ($i=0; $i < $this->length; $i++) { 
-						$stmt->bindParam(':'.$i,$this->ArrayDatos[$i]);
+
+						$st = $dbh->prepare($sqlt);
+
+						$st->bindParam(':mail',$this->ArrayDatos[9]);
+						$st->bindParam(':tel1',$this->ArrayDatos[7]);
+						$st->bindParam(':tel2',$this->ArrayDatos[8]);
+						$st->execute();
+						
+						echo "Cliente updated";
+
 					}
+					else{
+						echo "cliente existente sin modificacion";
+					}
+    				
+    				
+
+				}else{ //---------si no existe se crea el usuario en la tabla
+					$st = $dbh->prepare("INSERT INTO `clientes`(`ID`, `CODCTA`, `NOMBRE`, `DIRECC`, `CALLE`, `NRO`, `LOCALIDAD`, `CODPOSTAL`, `NROTEL1`, `NROTEL2`, `MAIL`, `CODIVA`, `NROIVA`, `CODVEN`, `CODCOB`, `LISPRE`, `LIMCRE`, `DIAVEN`, `DEUSAL`, `ESTADO`, `TIMING`) VALUES (0,:cod,:name,:dir,:street,:num,:loc,:cp,:tel1,:tel2,:mail,:codiva,:numiva,:codven,:codcob,:lispre,:limcre,:diaven,:deusal,:state,current_timestamp())");
+
+
+
+					//------------se asignan los parámetros a los bindeos
+					$params=[
+						":cod" => $this->ArrayDatos[0],
+						":name" => $this->ArrayDatos[1],
+						":dir" => $this->ArrayDatos[2],
+						":street" => $this->ArrayDatos[3],
+						":num" => $this->ArrayDatos[4],
+						":loc" => $this->ArrayDatos[5],
+						":cp" => $this->ArrayDatos[6],
+						":tel1" => $this->ArrayDatos[7],
+						":tel2" => $this->ArrayDatos[8],
+						":mail" => $this->ArrayDatos[9],
+						":codiva" => $this->ArrayDatos[10],
+						":numiva" => $this->ArrayDatos[11],
+						":codven" => $this->ArrayDatos[12],
+						":codcob" => $this->ArrayDatos[13],
+						":lispre" => $this->ArrayDatos[14],
+						":limcre" => $this->ArrayDatos[15],
+						":diaven" => $this->ArrayDatos[16],
+						":deusal" => $this->ArrayDatos[17],
+						":state" => $this->ArrayDatos[18]
+					];
+
+					
+					foreach ($params as $key => &$val) {
+    					$st->bindParam($key, $val); //------------aca se bindean los parametros
+					}					
 
 					$st->execute();
 					echo "usuario creado";
 
 				}
-
-				/*if($query=mysqli_query($conexion,$sql))
-				{
-
-					$resp=mysqli_fetch_array($query);
-					$lenght=sizeof($ArrayDatos);
-					for ($i=0; $i < $length; $i++) { 
-						if($ArrayDatos[$i]!=$resp[$i]) //----compara los datos del array con los datos en la tabla
-						{
-							//$sql2="UPDATE `clientes` SET '$Schema'='$ArrayDatos['$i']' WHERE CODCTA='$ArrayDatos['$i']'";
-						}
-					}
-				}*/
 				
 			}
 		}

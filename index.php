@@ -25,7 +25,6 @@
 			$cliente=new Cliente($firstaux);
 			//$cliente->getClientes();
 			echo '<hr>';
-			echo '<span>'.$firstaux[0].'</span>';
 			$cliente->compareClientes();
 			echo '<br>';
 			$i++;
