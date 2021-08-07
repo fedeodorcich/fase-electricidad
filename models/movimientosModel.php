@@ -12,32 +12,14 @@
 			{
 				$this->ArrayDatos = $array;
 				$this->length = sizeof($array);
-			}
-			//--------------------------------------------------------------------------------------------------UPDATE
-			function updateCliente($dbh,$id){
-				$sqlt="UPDATE `clientes` SET `MAIL` = :mail , `NROTEL1` = :tel1 , `NROTEL2` = :tel2 WHERE `clientes`.`ID` = :id";
-
-
-				$st = $dbh->prepare($sqlt);
-
-				$st->bindParam(':mail',$this->ArrayDatos[9]); //---------bindeo de datos
-				$st->bindParam(':tel1',$this->ArrayDatos[7]);
-				$st->bindParam(':tel2',$this->ArrayDatos[8]);
-				$st->bindParam(':id',$id);
-
-				$st->execute();	//-------actualiza correo y telefonos
-						
-				echo "Cliente updated";
-
-			}
+			}	
 			//---------------------------------------------------------------------------------------------------READ
-			function getClientes(){
+			function getMovimientos(){
 				print_r(json_encode($this->ArrayDatos));
 
 			}
 
 			//---------------------------------------------------------------------------------------------------COMPARE
-			 //mysql_real_escape_string($usuario), 
 
 			function compareMovimientos(){
 		

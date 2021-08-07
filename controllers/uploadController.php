@@ -35,31 +35,31 @@
 
 		function MovimientoRead(){
 			$aCadena = file("$this->mov");
-			$length = sizeof($this->aCadena);
+			$length = sizeof($aCadena);
 			for ($i=1; $i < $length; $i++) { 
-				$firstaux=$this->aCadena[$i];//asigna al auxiliar el segundo elemento del arreglo
+				$firstaux=$aCadena[$i];//asigna al auxiliar el segundo elemento del arreglo
 				$firstaux=explode(";", $firstaux);//Divide campos tomando como referencia el caracter de punto y coma
-				$cliente=new Cliente($firstaux);
-				$cliente->compareClientes();
-				$cliente->getClientes();
+				$movimiento=new Movimiento($firstaux);
+				$movimiento->compareMovimientos();
+				$movimiento->getMovimientos();
 				echo '<hr>';
 				echo '<br>';
 			}
 		}
-		/*
+		
 		function ArticuloRead(){
 			$aCadena = file("$this->art");
-			$length = sizeof($this->aCadena);
+			$length = sizeof($aCadena);
 			for ($i=1; $i < $length; $i++) { 
-				$firstaux=$this->aCadena[$i];//asigna al auxiliar el segundo elemento del arreglo
+				$firstaux=$aCadena[$i];//asigna al auxiliar el segundo elemento del arreglo
 				$firstaux=explode(";", $firstaux);//Divide campos tomando como referencia el caracter de punto y coma
-				$cliente=new Cliente($firstaux);
-				$cliente->compareClientes();
-				$cliente->getClientes();
+				$articulo=new Articulo($firstaux);
+				$articulo->compareArticulos();
+				$articulo->getArticulos();
 				echo '<hr>';
 				echo '<br>';
 			}
-		}*/
+		}
 	}
 
  ?>
