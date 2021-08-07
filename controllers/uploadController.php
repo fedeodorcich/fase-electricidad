@@ -1,0 +1,65 @@
+<?php
+
+	require_once $_SERVER['DOCUMENT_ROOT']."/fase-electricidad/models/clienteModel.php";
+	require_once $_SERVER['DOCUMENT_ROOT']."/fase-electricidad/models/articulosModel.php";
+	require_once $_SERVER['DOCUMENT_ROOT']."/fase-electricidad/models/movimientosModel.php";
+
+
+	class Uploader
+	{
+
+		private $art;
+		private $mov;
+		private $cli;
+
+		function __construct()
+		{
+				$this->art= $_SERVER['DOCUMENT_ROOT']."/fase-electricidad/textos/Articulos.txt";
+				$this->mov= $_SERVER['DOCUMENT_ROOT']."/fase-electricidad/textos/Movimientos.txt";
+				$this->cli= $_SERVER['DOCUMENT_ROOT']."/fase-electricidad/textos/Clientes.txt";
+		}
+	
+		
+		function ClienteRead(){
+			$aCadena = file("$this->cli");
+			$length = sizeof($aCadena);
+			for ($i=1; $i < $length; $i++) { 
+				$firstaux=$aCadena[$i];//asigna al auxiliar el segundo elemento del arreglo
+				$firstaux=explode(";", $firstaux);//Divide campos tomando como referencia el caracter de punto y coma
+				$cliente=new Cliente($firstaux);
+				$cliente->compareClientes();
+				$cliente->getClientes();
+				echo '<hr>';
+			}
+		}
+
+		function MovimientoRead(){
+			$aCadena = file("$this->mov");
+			$length = sizeof($this->aCadena);
+			for ($i=1; $i < $length; $i++) { 
+				$firstaux=$this->aCadena[$i];//asigna al auxiliar el segundo elemento del arreglo
+				$firstaux=explode(";", $firstaux);//Divide campos tomando como referencia el caracter de punto y coma
+				$cliente=new Cliente($firstaux);
+				$cliente->compareClientes();
+				$cliente->getClientes();
+				echo '<hr>';
+				echo '<br>';
+			}
+		}
+		/*
+		function ArticuloRead(){
+			$aCadena = file("$this->art");
+			$length = sizeof($this->aCadena);
+			for ($i=1; $i < $length; $i++) { 
+				$firstaux=$this->aCadena[$i];//asigna al auxiliar el segundo elemento del arreglo
+				$firstaux=explode(";", $firstaux);//Divide campos tomando como referencia el caracter de punto y coma
+				$cliente=new Cliente($firstaux);
+				$cliente->compareClientes();
+				$cliente->getClientes();
+				echo '<hr>';
+				echo '<br>';
+			}
+		}*/
+	}
+
+ ?>
