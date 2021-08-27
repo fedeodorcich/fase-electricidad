@@ -8,25 +8,47 @@
 
 	<META HTTP-EQUIV="REFRESH" CONTENT="500;index.php">
 	<title></title>
+	
+	<link rel="stylesheet" href="bootstrap.min.css">
 </head>
 <body style="background-color:black;">
-	<?php 
-
+	<style>
+		.scroller{
+			height: 500px;
+			overflow-y: scroll;
+		}
+	</style>
+	 <?php 
 		$uploader=new Uploader();
-		
-
-		echo '<div style="background-color:red;"><h2>CLIENTES</h2>';
-		$uploader->ClienteRead();
-		echo '</div>';
-
-		echo '<div style="background-color:cyan;"><h2>MOVIMIENTOS</h2>';
-		$uploader->MovimientoRead();
-		echo '</div>';
-		
-		echo '<div style="background-color:magenta;"><h2>ARTICULOS</h2>';
-		$uploader->ArticuloRead();
-		echo '</div>';
 	 ?>
+
+	 <div class="col-md-12 container row m-auto">
+
+	 	<div class="col-md-4 bg-primary m-auto scroller">
+	 		<h3>Clientes</h3>
+	 		<?php  $uploader->ClienteRead();?>
+	 	</div>
+
+	 	<div class="col-md-4 bg-info m-auto scroller">
+	 		<h3>Movimientos</h3>
+	 		<?php  $uploader->MovimientoRead();?>
+	 	</div>
+
+	 	<div class="col-md-4 bg-secondary m-auto scroller">
+	 		<h3>Artículos</h3>
+	 		<?php  $uploader->ArticuloRead(); ?>
+	 	</div>
+
+	 </div>
+
+	 <div>
+	 	<div class="spinner-border text-primary" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div>
+	 </div>
+
+
+
 
 </body>
 </html>

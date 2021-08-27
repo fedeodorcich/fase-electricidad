@@ -27,7 +27,7 @@
 
 				$st->execute();	//-------actualiza correo y telefonos
 						
-				echo "Cliente updated";
+				echo "Cliente ".$this->ArrayDatos[0]." actualizado";
 
 			}
 			//---------------------------------------------------------------------------------------------------READ
@@ -60,7 +60,7 @@
 						$dbh=null;
 					}
 					else{
-						echo "Cliente existente sin modificacion";
+						echo "Cliente ".$row['CODCTA']." sin modificacion";
 						$dbh=null;
 					}
     				
@@ -100,7 +100,7 @@
 					}					
 
 					$st->execute();
-					echo "usuario creado";
+					echo "Cliente ".$this->ArrayDatos[0]." agregado";
 					$st=null;
 
 				}

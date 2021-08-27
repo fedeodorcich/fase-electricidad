@@ -1,9 +1,7 @@
 <?php 
-
-	
 	require_once($_SERVER['DOCUMENT_ROOT'].'/fase-electricidad/php/conexion.php');
 
-	class Movimiento
+	class Vencimiento
 		{
 			private $ArrayDatos = [];
 			private $length;
@@ -14,14 +12,14 @@
 				$this->length = sizeof($array);
 			}	
 			//---------------------------------------------------------------------------------------------------READ
-			function getMovimientos(){
-				//print_r(json_encode($this->ArrayDatos));
+			function getVencimientos(){
+				print_r(json_encode($this->ArrayDatos));
 
 			}
 
 			//---------------------------------------------------------------------------------------------------COMPARE
 
-			function compareMovimientos(){
+			function compareVencimientos(){
 		
 				$con=new Conectar(); //-----------se crea el objeto de la clase conectar
 				$dbh=$con->conexion(); //---------se asigna a la variable el método de conexion
@@ -29,13 +27,13 @@
 				$sql="SELECT * FROM movimientos WHERE NROMOV=:dato"; //---busca movimiento existente
 				$stmt = $dbh->prepare($sql);
 
-				$stmt->bindParam(':dato',$this->ArrayDatos[0]);
+				$stmt->bindParam(':dato',$this->ArrayDatos[10]);
 
 				$stmt->execute();
 
 				if($row = $stmt->fetch()){ //---si el movimiento existe ejecuta esto				
 
-					echo "Movimiento ya creado";
+					echo "No hay actualización";
 
 				}else{ //---------si el movimiento no existe lo crea en la tabla
 					$st = $dbh->prepare("INSERT INTO `movimientos`(`ID`, `NROMOV`,`TIPASI`, `TIPCOM`, `SERCOM`, `NROCOM`, `FECCOM`, `CODCTA`, `TOTDEB`, `TOTCRE`, `SALLIB`, `OBSERV`, `TIMING`) VALUES (0,:nromov,:tipasi,:tipcom,:sercom,:nrocom,:fecom,:codcta,:totdeb,:totcre,:sallib,:observ,current_timestamp())");
@@ -73,5 +71,4 @@
 			}
 		}
 
-
- ?>
+?>

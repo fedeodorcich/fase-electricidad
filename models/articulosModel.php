@@ -9,6 +9,7 @@
 			private $ArrayDatos = [];
 			private $length;
 			//--------------------------------------------------------------------------------------------------CREATE
+
 			function __construct($array)
 			{
 				$this->ArrayDatos = $array;
@@ -16,8 +17,36 @@
 			}
 		
 			//---------------------------------------------------------------------------------------------------READ
+
 			function getArticulos(){
-				print_r(json_encode($this->ArrayDatos));
+				//print_r(json_encode($this->ArrayDatos));
+
+			}
+
+			//---------------------------------------------------------------------------------------------------UPDATE
+
+			function updateArticulo($dbh,$id){
+				$sqlt="UPDATE `articulo` SET `PRELIS1`=:p1 ,`PRELIS2`= :p2,`PRELIS3`= :p3,`PRELIS4`= :p4,`PRELIS5`= :p5,`PRELIS6`= :p6,`PORCIVA`=:porciva,`PREDOL`=:predol,`IMPINT`=:impint,`EXENTO`=:exento,`ESTADO`=:estado, WHERE `articulos`.`ID` = :id";
+
+
+				$st = $dbh->prepare($sqlt);
+
+				$st->bindParam(':p1',$this->ArrayDatos[7]); //---------bindeo de datos
+				$st->bindParam(':p2',$this->ArrayDatos[8]);
+				$st->bindParam(':p3',$this->ArrayDatos[9]);
+				$st->bindParam(':p4',$this->ArrayDatos[10]);
+				$st->bindParam(':p5',$this->ArrayDatos[11]);
+				$st->bindParam(':p6',$this->ArrayDatos[12]);
+				$st->bindParam(':porciva',$this->ArrayDatos[13]);
+				$st->bindParam(':predol',$this->ArrayDatos[14]);
+				$st->bindParam(':impint',$this->ArrayDatos[15]);
+				$st->bindParam(':exento',$this->ArrayDatos[16]);
+				$st->bindParam(':estado',$this->ArrayDatos[20]);
+				$st->bindParam(':id',$id);
+
+				$st->execute();	//-------actualiza correo y telefonos
+						
+				echo "Articulo updated";
 
 			}
 
@@ -28,7 +57,7 @@
 				$con=new Conectar(); //-----------se crea el objeto de la clase conectar
 				$dbh=$con->conexion(); //---------se asigna a la variable el método de conexion
 
-				$sql="SELECT * FROM articulos WHERE CODART=:dato"; //---busca cliente existente en base al código de cliente
+				$sql="SELECT * FROM articulos WHERE CODART=:dato"; //---busca articulo existente en base al código de articulo
 
 				$stmt = $dbh->prepare($sql);
 
@@ -38,8 +67,8 @@
 
 				if($row = $stmt->fetch()){ //---si el articulo existe ejecuta esto
 
-					/*
-					if($row['MAIL']!=$this->ArrayDatos[9] || $row['NROTEL1']!=$this->ArrayDatos[7] || $row['NROTEL2']!=$this->ArrayDatos[8]) //-----si hay cambios en correo o telefonos entra
+					
+					if($row['PRELIS1']!=$this->ArrayDatos[7] || $row['PRELIS2']!=$this->ArrayDatos[8] || $row['PRELIS3']!=$this->ArrayDatos[9]|| $row['PRELIS4']!=$this->ArrayDatos[10]|| $row['PRELIS5']!=$this->ArrayDatos[11]|| $row['PRELIS6']!=$this->ArrayDatos[12]|| $row['PORCIVA']!=$this->ArrayDatos[13]|| $row['PREDOL']!=$this->ArrayDatos[14]|| $row['IMPINT']!=$this->ArrayDatos[15]|| $row['EXENTO']!=$this->ArrayDatos[16]|| $row['ESTADO']!=$this->ArrayDatos[20]) //-----si hay cambios en precios u otras cosas entra
 					{
 						$this->updateCliente($dbh,$row['ID']);
 						$dbh=null;
@@ -48,7 +77,7 @@
 						echo "Cliente existente sin modificacion";
 						$dbh=null;
 					}
-    				*/
+    				
     				echo "el artículo existe";
     				
 
